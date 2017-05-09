@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="gitPull" result-type="void" api-version="6.0.0" id="ff543468-6daf-4f12-82a4-92c722cee572" version="0.0.0" allowed-operations="vef">
+  <param n="repository" t="CodeGuardian:GitRemoteRepo"><![CDATA[]]></param>
+  <param n="conflicts" t="Array/Properties"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[//Get Helper
+var gitHelper = Server.findForType("CodeGuardian:GitHelper", "helper");
+//Pull Package from Repo
+gitHelper.pullPackage(repository, conflicts);
+System.log("Package Pulled from " + repository.name + " repository!");]]></script>
+</dunes-script-module>

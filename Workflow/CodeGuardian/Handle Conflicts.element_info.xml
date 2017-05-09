@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">CodeGuardian</entry>
+<entry key="name">Handle Conflicts</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">ed4b6c7d-c7b9-4921-adc9-2c57634e892e</entry>
+</properties>

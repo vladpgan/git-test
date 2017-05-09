@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="ed4b6c7d-c7b9-4921-adc9-2c57634e892e" version="0.0.13" api-version="6.0.0" allowed-operations="vef" icon-id="023a200c-b6f3-413e-b9c4-249f1a279a53" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Handle Conflicts]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="repo" type="CodeGuardian:GitRemoteRepo"/>
+    <param name="conflicts" type="Array/Properties"/>
+  </input>
+  <output>
+    <param name="handledConflicts" type="Array/Properties"/>
+  </output>
+  <attrib name="counter" type="number" read-only="false">
+    <value encoded="n"><![CDATA[0.0]]></value>
+  </attrib>
+  <attrib name="conflictToResolve" type="Properties" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="choices" type="Array/string" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="choice" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="conflictBuffer" type="Array/Properties" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="784.5"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item0" type="task">
+    <display-name><![CDATA[Set Output]]></display-name>
+    <script encoded="false"><![CDATA[handledConflicts = conflictBuffer;]]></script>
+    <in-binding>
+      <bind name="repo" type="CodeGuardian:GitRemoteRepo" export-name="repo"/>
+      <bind name="conflictBuffer" type="Array/Properties" export-name="conflictBuffer"/>
+    </in-binding>
+    <out-binding>
+      <bind name="handledConflicts" type="Array/Properties" export-name="handledConflicts"/>
+    </out-binding>
+    <position y="55.40909090909091" x="504.5"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item2" type="custom-condition" alt-out-name="item6">
+    <display-name><![CDATA[Loop Conflicts]]></display-name>
+    <script encoded="false"><![CDATA[return counter == conflicts.length;]]></script>
+    <in-binding>
+      <bind name="counter" type="number" export-name="counter"/>
+      <bind name="conflicts" type="Array/Properties" export-name="conflicts"/>
+    </in-binding>
+    <position y="45.90909090909091" x="365.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item7" type="input">
+    <display-name><![CDATA[Ask User About Conflict]]></display-name>
+    <in-binding>
+      <bind name="security.group" type="LdapGroup" explicitly-not-bound="true" export-name="NULL">
+        <description><![CDATA[Any user member of this security group will be authorized to answer this 'Input']]></description>
+      </bind>
+      <bind name="security.assignees" type="Array/LdapUser" explicitly-not-bound="true" export-name="NULL">
+        <description><![CDATA[Any user member of this array will be authorized to answer this 'Input']]></description>
+      </bind>
+      <bind name="security.assignee.groups" type="Array/LdapGroup" explicitly-not-bound="true" export-name="NULL">
+        <description><![CDATA[Any user member of any group in this array will be authorized to answer this 'Input']]></description>
+      </bind>
+      <bind name="timeout.date" type="Date" explicitly-not-bound="true" export-name="NULL">
+        <description><![CDATA[If not null, this input item will wait until date and will continue workflow execution.]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="choice" type="string" export-name="choice"/>
+    </out-binding>
+    <presentation>
+      <desc><![CDATA[Conflict Detected - Please resolve conflict and choose which source to pull from (Remote or Local)]]></desc>
+      <p-param name="choice">
+        <desc><![CDATA[choice]]></desc>
+        <p-qual kind="ognl" name="linkedEnumeration" type="Array/string"><![CDATA[#choices]]></p-qual>
+      </p-param>
+    </presentation>
+    <position y="182.68181818181816" x="365.0"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item5" type="task">
+    <display-name><![CDATA[Process Conflict]]></display-name>
+    <script encoded="false"><![CDATA[conflictToResolve = conflicts[counter];
+
+choices = ["Local: " + conflictToResolve.get("type") + " with name " + conflictToResolve.get("name"),"Remote: " + conflictToResolve.get("type") + " with name " + conflictToResolve.get("name")]]]></script>
+    <in-binding>
+      <bind name="counter" type="number" export-name="counter"/>
+      <bind name="conflicts" type="Array/Properties" export-name="conflicts"/>
+    </in-binding>
+    <out-binding>
+      <bind name="conflictToResolve" type="Properties" export-name="conflictToResolve"/>
+      <bind name="choices" type="Array/string" export-name="choices"/>
+    </out-binding>
+    <position y="119.04545454545453" x="365.0"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item3" type="task">
+    <display-name><![CDATA[Process User Input]]></display-name>
+    <script encoded="false"><![CDATA[if(choice.indexOf("Remote") == 0){
+	conflictBuffer[counter].put("keepLocal", "false");
+}
+
+counter++;]]></script>
+    <in-binding>
+      <bind name="counter" type="number" export-name="counter"/>
+      <bind name="choice" type="string" export-name="choice"/>
+      <bind name="conflictBuffer" type="Array/Properties" export-name="conflictBuffer"/>
+    </in-binding>
+    <out-binding>
+      <bind name="counter" type="number" export-name="counter"/>
+      <bind name="conflictBuffer" type="Array/Properties" export-name="conflictBuffer"/>
+    </out-binding>
+    <position y="119.04545454545453" x="524.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item3" type="task">
+    <display-name><![CDATA[Pass Input]]></display-name>
+    <script encoded="false"><![CDATA[handledConflicts = conflicts;]]></script>
+    <in-binding>
+      <bind name="conflicts" type="Array/Properties" export-name="conflicts"/>
+    </in-binding>
+    <out-binding>
+      <bind name="handledConflicts" type="Array/Properties" export-name="conflictBuffer"/>
+    </out-binding>
+    <position y="55.40909090909091" x="204.5"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="repo">
+      <desc><![CDATA[repo]]></desc>
+    </p-param>
+    <p-param name="conflicts">
+      <desc><![CDATA[conflicts]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

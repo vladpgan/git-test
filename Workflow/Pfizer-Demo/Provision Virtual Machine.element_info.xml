@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">Pfizer-Demo</entry>
+<entry key="name">Provision Virtual Machine</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">81a188be-0706-41ef-969d-9ad630efb290</entry>
+</properties>

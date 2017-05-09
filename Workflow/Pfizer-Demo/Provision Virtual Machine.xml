@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item4" object-name="workflow:name=generic" id="81a188be-0706-41ef-969d-9ad630efb290" version="0.0.4" api-version="6.0.0" allowed-operations="vef" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Provision Virtual Machine]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <attrib name="Repository" type="CodeGuardian:GitRemoteRepo" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='Production%20Jenkins%20Demo'&dunesName='CodeGuardian:GitRemoteRepo']]></value>
+    <description><![CDATA[Select the Git Reposotory you would want to pull from]]></description>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="904.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="link" linked-workflow-id="7b82e816-1035-4e33-8d5f-e63bd7067ed1">
+    <display-name><![CDATA[Step 1]]></display-name>
+    <in-binding/>
+    <out-binding/>
+    <position y="55.40909090909091" x="604.5"/>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item1" type="link" linked-workflow-id="cf6fb9a7-6d64-4df3-b4fe-2e4c33a520a1">
+    <display-name><![CDATA[Pull]]></display-name>
+    <in-binding>
+      <bind name="Repository" type="CodeGuardian:GitRemoteRepo" export-name="Repository">
+        <description><![CDATA[Select the Git Reposotory you would want to pull from]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Pull (Import) Package from the Git Repo.
+The latest commit of the current working branch will get imported.]]></description>
+    <position y="55.40909090909091" x="304.5"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

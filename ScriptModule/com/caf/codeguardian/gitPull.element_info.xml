@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">com.caf.codeguardian</entry>
+<entry key="name">gitPull</entry>
+<entry key="type">ScriptModule</entry>
+<entry key="id">ff543468-6daf-4f12-82a4-92c722cee572</entry>
+</properties>

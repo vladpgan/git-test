@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dunes-script-module name="getPullConflicts" result-type="Array/Properties" api-version="6.0.0" id="97fc6279-c1fb-4ae5-b481-435e37865c78" version="0.0.0" allowed-operations="vef">
+  <param n="repo" t="CodeGuardian:GitRemoteRepo"><![CDATA[]]></param>
+  <script encoded="false"><![CDATA[conflicts = [];
+maps = repo.getPullConflicts();
+for each(map in maps){
+var conflict = new Properties();
+	conflict.put("name", map.get("name"));
+	conflict.put("type", map.get("type"));
+	conflict.put("id", map.get("id"));
+	conflict.put("keepLocal", map.get("keepLocal"));
+	conflicts.push(conflict);
+
+}
+return conflicts;
+
+]]></script>
+</dunes-script-module>

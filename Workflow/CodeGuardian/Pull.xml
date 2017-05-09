@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="cf6fb9a7-6d64-4df3-b4fe-2e4c33a520a1" version="0.0.8" api-version="6.0.0" allowed-operations="vef" icon-id="450927b3-0565-4936-9dbe-80dce307fdba" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Pull]]></display-name>
+  <description><![CDATA[Pull (Import) Package from the Git Repo.
+The latest commit of the current working branch will get imported.]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="Repository" type="CodeGuardian:GitRemoteRepo">
+      <description><![CDATA[Select the Git Reposotory you would want to pull from]]></description>
+    </param>
+  </input>
+  <attrib name="conflicts" type="Array/Properties" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="handledConflicts" type="Array/Properties" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="984.5"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item0" type="task" script-module="com.caf.codeguardian/gitPull">
+    <display-name><![CDATA[gitPull]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+System.getModule("com.caf.codeguardian").gitPull(repository,conflicts) ;]]></script>
+    <in-binding>
+      <bind name="repository" type="CodeGuardian:GitRemoteRepo" export-name="Repository"/>
+      <bind name="conflicts" type="Array/Properties" export-name="handledConflicts"/>
+    </in-binding>
+    <out-binding/>
+    <position y="55.40909090909091" x="724.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item5" type="task" script-module="com.caf.codeguardian/getPullConflicts">
+    <display-name><![CDATA[getPullConflicts]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.caf.codeguardian").getPullConflicts(repo) ;]]></script>
+    <in-binding>
+      <bind name="repo" type="CodeGuardian:GitRemoteRepo" export-name="Repository"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="Array/Properties" export-name="conflicts"/>
+    </out-binding>
+    <position y="55.40909090909091" x="204.5"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item2" type="link" linked-workflow-id="ed4b6c7d-c7b9-4921-adc9-2c57634e892e">
+    <display-name><![CDATA[Handle Conflicts]]></display-name>
+    <in-binding>
+      <bind name="repo" type="CodeGuardian:GitRemoteRepo" export-name="Repository"/>
+      <bind name="conflicts" type="Array/Properties" export-name="conflicts"/>
+    </in-binding>
+    <out-binding>
+      <bind name="handledConflicts" type="Array/Properties" export-name="handledConflicts"/>
+    </out-binding>
+    <position y="137.22727272727272" x="524.5"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item2" type="custom-condition" alt-out-name="item3">
+    <display-name><![CDATA[conflict check]]></display-name>
+    <script encoded="false"><![CDATA[return conflicts.length == 0;]]></script>
+    <in-binding>
+      <bind name="conflicts" type="Array/Properties" export-name="conflicts"/>
+    </in-binding>
+    <position y="45.40909090909091" x="344.5"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="Repository">
+      <desc><![CDATA[Select the Git Reposotory you would want to push to]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+  </presentation>
+</workflow>
