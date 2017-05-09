@@ -12,7 +12,7 @@
   <workflow-item name="item1" out-name="item0" catch-name="item2" throw-bind-name="errorCode" type="task">
     <display-name><![CDATA[Scriptable task]]></display-name>
     <script encoded="false"><![CDATA[// a demo script
-System.log("Hey, just checking permissions");
+System.log("Hey, just checking permissions. Again.");
 //throw("this is going to fail");]]></script>
     <in-binding/>
     <out-binding/>
